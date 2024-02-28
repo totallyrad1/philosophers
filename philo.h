@@ -35,11 +35,10 @@ typedef struct s_vars
 	int					everyoneate;
 }				t_vars;
 
-
 int	ft_atoi(const char *str);
 int init_philos(t_vars **vars);
 long get_time();
 int	checkargs(char **av);
-int free_all(t_vars *vars, int exitstatus);
+int free_all(t_vars *vars);
 
 #endif

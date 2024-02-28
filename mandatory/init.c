@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:25:37 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 16:34:57 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 16:41:16 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,5 +144,6 @@ int init_philos(t_vars **vars)
 		i++;
 	}
 	manager(*vars);
+	free_all(*vars);
 	return (1);
 }

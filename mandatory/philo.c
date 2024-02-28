@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:52:47 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 16:34:14 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 16:42:00 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ static int init(char **av, t_vars **vars)
 
 void f()
 {
-	system("leaks philo");
+	system("leaks philo > leaks");
 }
 
 int	main(int ac, char **av)
 {
 	t_vars	*vars;
 	
-	// atexit(f);
+	atexit(f);
 	if ((ac != 5 && ac != 6 ) || checkargs(av) == -1)
 	{
 		printf("invalid arguments\n");
@@ -74,5 +74,5 @@ int	main(int ac, char **av)
 	vars->monitoralive = 1;
 	vars->everyoneate = vars->n_philos;
 	if ((vars) && !init_philos(&vars))
-		return (free_all(vars, 1));
+		return (free_all(vars), 1);
 }
