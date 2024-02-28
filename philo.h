@@ -1,13 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/28 19:32:23 by asnaji            #+#    #+#             */
+/*   Updated: 2024/02/28 19:33:14 by asnaji           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 # include <stdio.h> 
 # include <stdlib.h> 
 # include <unistd.h> 
 # include <pthread.h> 
 # include <limits.h>
 # include <sys/time.h>
+
 # define RAD 1
-struct s_vars;
+
+struct	s_vars;
 
 typedef struct s_philo
 {
@@ -15,9 +29,9 @@ typedef struct s_philo
 	int				philoindex;
 	long			lasttime_ate;
 	int				eating_count;
-	pthread_mutex_t *leftfork;
+	pthread_mutex_t	*leftfork;
 	struct s_vars	*vars;
-	pthread_mutex_t *rightfork;
+	pthread_mutex_t	*rightfork;
 }				t_philo;
 
 typedef struct s_vars
@@ -37,11 +51,16 @@ typedef struct s_vars
 	int					everyoneate;
 }				t_vars;
 
-int	ft_atoi(const char *str);
-int init_philos(t_vars **vars);
-long get_time();
-int	checkargs(char **av);
-int free_all(t_vars *vars);
+int		ft_atoi(const char *str);
+int		init_philos(t_vars **vars);
+long	get_time(void);
+int		checkargs(char **av);
+int		free_all(t_vars *vars);
+void	ft_usleep(int time);
+void	manager(t_vars *vars);
+int		forksnphilos(t_vars **vars);
+int		initforks(t_vars **vars);
+void	updatevalues(t_philo **philo);
 
 void	print_tookfork(t_philo *philo);
 void	print_eating(t_philo *philo);

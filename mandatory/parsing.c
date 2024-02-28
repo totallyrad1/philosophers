@@ -6,13 +6,13 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:02:55 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 14:22:43 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 19:33:32 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	ft_isspace(char c)
+static int	ft_isspace(char c)
 {
 	if (c == 32 || c == '\t')
 		return (1);
@@ -21,7 +21,7 @@ int	ft_isspace(char c)
 	return (0);
 }
 
-int	validarg(char *str)
+static int	validarg(char *str)
 {
 	int	i;
 
