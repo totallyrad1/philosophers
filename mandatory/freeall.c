@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:25:30 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 15:01:57 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 16:28:06 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int free_all(t_vars *vars, int exitstatus)
 	int	i;
 
 	i = 0;
-	while (vars && vars->philos[i].philo)
-		free(vars->philos[i].philo);
 	if (vars && vars->philos)
 		free(vars->philos);
 	i = 0;

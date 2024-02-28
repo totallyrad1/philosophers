@@ -31,6 +31,8 @@ typedef struct s_vars
 	pthread_mutex_t		*forks;
 	t_philo				*philos;
 	int					ended;
+	int					monitoralive;
+	int					everyoneate;
 }				t_vars;
 
 

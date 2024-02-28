@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:25:37 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 15:50:25 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 16:34:57 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,13 @@ void *routine(void *philos)
 		philo->lasttime_ate = get_time();
 		philo->eating_count++;
 		ft_usleep(philo->vars->time_to_eat);
-		if (philo->eating_count == philo->vars->n_times_must_eat)
-		{
-			printf("%ld %d is done eating\n", get_time() - philo->vars->inittime, philo->philoindex);
-			pthread_mutex_unlock(philo->leftfork);
-			pthread_mutex_unlock(philo->rightfork);
-			break;
-		}
 		pthread_mutex_unlock(philo->leftfork);
 		pthread_mutex_unlock(philo->rightfork);
+		if (philo->eating_count == philo->vars->n_times_must_eat)
+		{
+			philo->vars->everyoneate--;
+			break;
+		}
 		printf("%ld %d is sleeping\n", get_time() - philo->vars->inittime, philo->philoindex);
 		ft_usleep(philo->vars->time_to_sleep);
 		printf("%ld %d is thinking\n", get_time() - philo->vars->inittime, philo->philoindex);
@@ -85,13 +83,6 @@ int forksnphilos(t_vars **vars)
 	(*vars)->philos = malloc(sizeof(t_philo) * (*vars)->n_philos);
 	if (!(*vars)->philos)
 		return(-1);
-	while(i < (*vars)->n_philos)
-	{
-		(*vars)->philos[i].philo = malloc(sizeof(pthread_t));
-		if(!(*vars)->philos[i].philo)
-			return (-1);
-		i++;
-	}
 	return (1);
 }
 
@@ -100,13 +91,14 @@ void manager(t_vars *vars)
 	int	i;
 
 	i = 0;
-	while(RAD)
+	while(RAD && vars->everyoneate > 0)
 	{
 		if(i == (vars)->n_philos)
 			i = 0;
 		if((get_time() - vars->philos[i].lasttime_ate) >= vars->time_to_die && vars->philos[i].eating_count != vars->n_times_must_eat)
 		{
 			printf("%ld philo %d died\n", get_time() - vars->inittime, vars->philos[i].philoindex);
+			vars->monitoralive = 0;
 			return ;
 		}
 		i++;
