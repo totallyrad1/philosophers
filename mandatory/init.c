@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:25:37 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 19:32:11 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 19:48:13 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ void	*routine(void *philos)
 		pthread_mutex_unlock(philo->rightfork);
 		if (philo->eating_count == philo->vars->n_times_must_eat)
 		{
+			pthread_mutex_lock(&(philo)->vars->lasttimeatemutex);
 			philo->vars->everyoneate--;
+			pthread_mutex_unlock(&(philo)->vars->lasttimeatemutex);
 			break ;
 		}
 		print_sleeping(philo);

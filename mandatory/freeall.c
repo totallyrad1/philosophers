@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:25:30 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 19:24:17 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 19:49:27 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ void	manager(t_vars *vars)
 	int	i;
 
 	i = 0;
-	while (RAD && vars->everyoneate > 0)
+	while (RAD)
 	{
 		if (i == (vars)->n_philos)
 			i = 0;
 		pthread_mutex_lock(&vars->lasttimeatemutex);
+		if (vars->everyoneate <= 0)
+			return ;
 		if ((get_time() - vars->philos[i].lasttime_ate) > vars->time_to_die
 			&& vars->philos[i].eating_count != vars->n_times_must_eat)
 		{
