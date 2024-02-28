@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:25:37 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 15:41:16 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 15:50:25 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void *routine(void *philos)
 
 	philo = (t_philo *)philos;
 	if(philo->philoindex % 2 == 0)
-		usleep(20);
+		usleep(200);
 	while(RAD)
 	{
 		pthread_mutex_lock(philo->leftfork);
@@ -38,6 +38,13 @@ void *routine(void *philos)
 		philo->lasttime_ate = get_time();
 		philo->eating_count++;
 		ft_usleep(philo->vars->time_to_eat);
+		if (philo->eating_count == philo->vars->n_times_must_eat)
+		{
+			printf("%ld %d is done eating\n", get_time() - philo->vars->inittime, philo->philoindex);
+			pthread_mutex_unlock(philo->leftfork);
+			pthread_mutex_unlock(philo->rightfork);
+			break;
+		}
 		pthread_mutex_unlock(philo->leftfork);
 		pthread_mutex_unlock(philo->rightfork);
 		printf("%ld %d is sleeping\n", get_time() - philo->vars->inittime, philo->philoindex);
@@ -97,7 +104,7 @@ void manager(t_vars *vars)
 	{
 		if(i == (vars)->n_philos)
 			i = 0;
-		if((get_time() - vars->philos[i].lasttime_ate) >= vars->time_to_die)
+		if((get_time() - vars->philos[i].lasttime_ate) >= vars->time_to_die && vars->philos[i].eating_count != vars->n_times_must_eat)
 		{
 			printf("%ld philo %d died\n", get_time() - vars->inittime, vars->philos[i].philoindex);
 			return ;
