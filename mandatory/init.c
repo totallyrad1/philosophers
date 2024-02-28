@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:25:37 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/27 22:31:33 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 15:41:16 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void initforks(t_vars **vars)
 	while((*vars) && i < (*vars)->n_philos)
 	{
 		(*vars)->philos[i].philoindex = i + 1;
+		(*vars)->philos[i].eating_count = 0;
+		(*vars)->philos[i].lasttime_ate = get_time();
 		(*vars)->philos[i].vars = *vars;
 		(*vars)->philos[i].leftfork = &(*vars)->forks[i];
 		if(i != (*vars)->n_philos - 1)
@@ -65,11 +67,52 @@ void initforks(t_vars **vars)
 	}	
 }
 
+int forksnphilos(t_vars **vars)
+{
+	int	i;
+
+	i = 0;
+	(*vars)->forks = malloc(sizeof(pthread_mutex_t) * (*vars)->n_philos);
+	if (!(*vars)->forks)
+		return (-1);
+	(*vars)->philos = malloc(sizeof(t_philo) * (*vars)->n_philos);
+	if (!(*vars)->philos)
+		return(-1);
+	while(i < (*vars)->n_philos)
+	{
+		(*vars)->philos[i].philo = malloc(sizeof(pthread_t));
+		if(!(*vars)->philos[i].philo)
+			return (-1);
+		i++;
+	}
+	return (1);
+}
+
+void manager(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	while(RAD)
+	{
+		if(i == (vars)->n_philos)
+			i = 0;
+		if((get_time() - vars->philos[i].lasttime_ate) >= vars->time_to_die)
+		{
+			printf("%ld philo %d died\n", get_time() - vars->inittime, vars->philos[i].philoindex);
+			return ;
+		}
+		i++;
+	}
+}
+
 int init_philos(t_vars **vars)
 {
 	int	i;
 
 	i = 0;
+	if(forksnphilos(vars) == -1)
+		return (0);
 	while (i < (*vars)->n_philos)
 	{
 		if (pthread_mutex_init(&(*vars)->forks[i], NULL) != 0)
@@ -94,12 +137,13 @@ int init_philos(t_vars **vars)
 	i = 0;
 	while (i < (*vars)->n_philos)
 	{
-		if(pthread_join((*vars)->philos[i].philo, NULL) != 0)
+		if(pthread_detach((*vars)->philos[i].philo) != 0)
 		{
-			perror("pthread_join");
+			perror("pthread_detach");
 			return (0);
 		}
 		i++;
 	}
+	manager(*vars);
 	return (1);
 }
