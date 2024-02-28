@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:25:30 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 19:49:27 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 21:44:20 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	free_all(t_vars *vars)
 	return (0);
 }
 
-void	manager(t_vars *vars)
+void	manager(t_vars *vars, int j)
 {
 	int	i;
 
 	i = 0;
 	while (RAD)
 	{
-		if (i == (vars)->n_philos)
+		if (i == j)
 			i = 0;
 		pthread_mutex_lock(&vars->lasttimeatemutex);
 		if (vars->everyoneate <= 0)

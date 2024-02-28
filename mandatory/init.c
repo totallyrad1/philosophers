@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:25:37 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 19:48:13 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 21:46:59 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,14 @@ int	initmutexes(t_vars **vars)
 	return (initforks(vars));
 }
 
-int	detachthreads(t_vars **vars)
+int	detachthreads(t_vars **vars ,int j)
 {
 	int	i;
 
 	i = 0;
-	while (i < (*vars)->n_philos)
+	while (i < j)
 	{
-		if (pthread_detach((*vars)->philos[i].philo) != 0)
-		{
-			perror("pthread_detach");
-			return (0);
-		}
+		pthread_detach((*vars)->philos[i].philo);
 		i++;
 	}
 	return (1);
@@ -98,17 +94,12 @@ int	init_philos(t_vars **vars)
 	(*vars)->inittime = get_time();
 	while (i < (*vars)->n_philos)
 	{
-		if (pthread_create(&(*vars)->philos[i].philo,
-				NULL, routine, &(*vars)->philos[i]) != 0)
-		{
-			perror("pthread_create");
-			return (0);
-		}
+		pthread_create(&(*vars)->philos[i].philo,
+			NULL, routine, &(*vars)->philos[i]);
 		i++;
 	}
-	if (detachthreads(vars) == 0)
-		return (0);
-	manager(*vars);
+	detachthreads(vars, i);
+	manager(*vars, i);
 	free_all(*vars);
 	return (1);
 }

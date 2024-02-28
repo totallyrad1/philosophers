@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 19:32:23 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 19:33:14 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 21:44:29 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ long	get_time(void);
 int		checkargs(char **av);
 int		free_all(t_vars *vars);
 void	ft_usleep(int time);
-void	manager(t_vars *vars);
+void	manager(t_vars *vars, int i);
 int		forksnphilos(t_vars **vars);
 int		initforks(t_vars **vars);
 void	updatevalues(t_philo **philo);

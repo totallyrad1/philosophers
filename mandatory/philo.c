@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:52:47 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 19:39:13 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 21:56:05 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	main(int ac, char **av)
 	}
 	if (init(av, &vars) == -1)
 	{
+		printf("invalid arguments\n");
 		if (vars)
 			free(vars);
 		return (1);
