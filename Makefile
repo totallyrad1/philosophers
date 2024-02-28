@@ -1,6 +1,6 @@
 NAME= philo
-SOURCES= mandatory/philo.c mandatory/init.c utils/ft_atoi.c mandatory/parsing.c mandatory/freeall.c
-COMPFLAGS= -Wall -Wextra -Werror -g 
+SOURCES= mandatory/philo.c mandatory/init.c utils/ft_atoi.c mandatory/parsing.c mandatory/freeall.c mandatory/print.c
+COMPFLAGS= -Wall -Wextra -Werror
 CC = cc
 OBJECT=$(SOURCES:.c=.o)
 

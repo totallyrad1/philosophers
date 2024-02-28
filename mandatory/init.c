@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:25:37 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 16:41:16 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/28 18:45:45 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ void *routine(void *philos)
 	while(RAD)
 	{
 		pthread_mutex_lock(philo->leftfork);
-		printf("%ld %d has taken a fork\n", get_time() - philo->vars->inittime, philo->philoindex);
+		print_tookfork(philo);
 		pthread_mutex_lock(philo->rightfork);
-		printf("%ld %d has taken a fork\n", get_time() - philo->vars->inittime, philo->philoindex);
-		printf("%ld %d is eating\n", get_time() - philo->vars->inittime, philo->philoindex);
+		print_tookfork(philo);
+		print_eating(philo);
+		pthread_mutex_lock(&philo->vars->lasttimeatemutex);
 		philo->lasttime_ate = get_time();
 		philo->eating_count++;
+		pthread_mutex_unlock(&philo->vars->lasttimeatemutex);
 		ft_usleep(philo->vars->time_to_eat);
 		pthread_mutex_unlock(philo->leftfork);
 		pthread_mutex_unlock(philo->rightfork);
@@ -45,9 +47,9 @@ void *routine(void *philos)
 			philo->vars->everyoneate--;
 			break;
 		}
-		printf("%ld %d is sleeping\n", get_time() - philo->vars->inittime, philo->philoindex);
+		print_sleeping(philo);
 		ft_usleep(philo->vars->time_to_sleep);
-		printf("%ld %d is thinking\n", get_time() - philo->vars->inittime, philo->philoindex);
+		print_thinking(philo);
 	}
 	return (NULL);
 }
@@ -95,12 +97,14 @@ void manager(t_vars *vars)
 	{
 		if(i == (vars)->n_philos)
 			i = 0;
-		if((get_time() - vars->philos[i].lasttime_ate) >= vars->time_to_die && vars->philos[i].eating_count != vars->n_times_must_eat)
+		pthread_mutex_lock(&vars->lasttimeatemutex);
+		if((get_time() - vars->philos[i].lasttime_ate) > vars->time_to_die && vars->philos[i].eating_count != vars->n_times_must_eat)
 		{
-			printf("%ld philo %d died\n", get_time() - vars->inittime, vars->philos[i].philoindex);
+			print_died(vars, i);
 			vars->monitoralive = 0;
 			return ;
 		}
+		pthread_mutex_unlock(&vars->lasttimeatemutex);
 		i++;
 	}
 }
@@ -112,6 +116,16 @@ int init_philos(t_vars **vars)
 	i = 0;
 	if(forksnphilos(vars) == -1)
 		return (0);
+	if (pthread_mutex_init(&(*vars)->print_mutex, NULL) != 0)
+	{
+		perror("pthread_mutex_init");
+		return (0);
+	}
+	if (pthread_mutex_init(&(*vars)->lasttimeatemutex, NULL) != 0)
+	{
+		perror("pthread_mutex_init");
+		return (0);
+	}
 	while (i < (*vars)->n_philos)
 	{
 		if (pthread_mutex_init(&(*vars)->forks[i], NULL) != 0)

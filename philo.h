@@ -31,6 +31,8 @@ typedef struct s_vars
 	pthread_mutex_t		*forks;
 	t_philo				*philos;
 	int					ended;
+	pthread_mutex_t		print_mutex;
+	pthread_mutex_t		lasttimeatemutex;
 	int					monitoralive;
 	int					everyoneate;
 }				t_vars;
@@ -40,5 +42,11 @@ int init_philos(t_vars **vars);
 long get_time();
 int	checkargs(char **av);
 int free_all(t_vars *vars);
+
+void	print_tookfork(t_philo *philo);
+void	print_eating(t_philo *philo);
+void	print_sleeping(t_philo *philo);
+void	print_thinking(t_philo *philo);
+void	print_died(t_vars *vars, int i);
 
 #endif
