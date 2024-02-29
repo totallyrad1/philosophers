@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:25:30 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 21:44:20 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:12:04 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	manager(t_vars *vars, int j)
 			&& vars->philos[i].eating_count != vars->n_times_must_eat)
 		{
 			print_died(vars, i);
-			vars->monitoralive = 0;
 			return ;
 		}
 		pthread_mutex_unlock(&vars->lasttimeatemutex);

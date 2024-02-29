@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:52:47 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 21:56:05 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:16:34 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int	main(int ac, char **av)
 			free(vars);
 		return (1);
 	}
-	vars->monitoralive = 1;
 	vars->everyoneate = vars->n_philos;
 	if ((vars) && !init_philos(&vars))
 		return (free_all(vars), 1);

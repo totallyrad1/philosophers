@@ -6,11 +6,23 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 22:25:37 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 21:46:59 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:20:46 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+int	eatingcount_check(t_philo **philo)
+{
+	if ((*philo)->eating_count == (*philo)->vars->n_times_must_eat)
+	{
+		pthread_mutex_lock(&(*philo)->vars->lasttimeatemutex);
+		(*philo)->vars->everyoneate--;
+		pthread_mutex_unlock(&(*philo)->vars->lasttimeatemutex);
+		return (0);
+	}
+	return (1);
+}
 
 void	*routine(void *philos)
 {
@@ -29,13 +41,8 @@ void	*routine(void *philos)
 		updatevalues(&philo);
 		pthread_mutex_unlock(philo->leftfork);
 		pthread_mutex_unlock(philo->rightfork);
-		if (philo->eating_count == philo->vars->n_times_must_eat)
-		{
-			pthread_mutex_lock(&(philo)->vars->lasttimeatemutex);
-			philo->vars->everyoneate--;
-			pthread_mutex_unlock(&(philo)->vars->lasttimeatemutex);
+		if (!eatingcount_check(&philo))
 			break ;
-		}
 		print_sleeping(philo);
 		print_thinking(philo);
 	}
@@ -71,7 +78,7 @@ int	initmutexes(t_vars **vars)
 	return (initforks(vars));
 }
 
-int	detachthreads(t_vars **vars ,int j)
+int	detachthreads(t_vars **vars, int j)
 {
 	int	i;
 

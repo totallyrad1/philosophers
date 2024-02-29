@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 19:32:23 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/28 21:44:29 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:12:12 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@ typedef struct s_vars
 	long				inittime;
 	pthread_mutex_t		*forks;
 	t_philo				*philos;
-	int					ended;
 	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		lasttimeatemutex;
-	int					monitoralive;
 	int					everyoneate;
 }				t_vars;
 
