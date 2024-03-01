@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:54:09 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 13:21:01 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:24:28 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,44 +42,49 @@ void	updatevalues(t_philo **philo)
 	(*philo)->eating_count++;
 }
 
-void routine(t_philo *philo)
+void	*routine(void *philos)
 {
-	pthread_t monitorth;
-	int i = 0;
+	t_philo	*philo;
 
+	philo = (t_philo *)philos;
+	philo->lasttime_ate = get_time();
+	if (philo->philoindex % 2 == 0)
+		usleep(500);
 	while(RAD)
 	{
 		sem_wait(philo->vars->semaphore);
 		print_tookfork(philo);
 		sem_wait(philo->vars->semaphore);
 		print_tookfork(philo);
-		philo->lasttime_ate = get_time();
 		print_eating(philo);
-		philo->eating_count++;
+		updatevalues(&philo);
 		sem_post(philo->vars->semaphore);
 		sem_post(philo->vars->semaphore);
 		if (philo->eating_count == philo->vars->n_times_must_eat)
 			exit(0);
 		print_sleeping(philo);
 		print_thinking(philo);
-		if(i == 0)
-		{
-			pthread_create(&monitorth ,NULL, monitor, philo);
-			pthread_detach(monitorth);
-			i = 1;
-		}
 	}
+}
+
+void chhild(t_philo *philo)
+{
+	pthread_t monitorth;
+	pthread_t slave;
+
+	pthread_create(&slave ,NULL, routine, philo);
+	pthread_create(&monitorth ,NULL, monitor, philo);
+	pthread_join(slave, NULL);
 }
 
 int init_philos(t_vars **vars)
 {
 	int i;
-	pid_t	id;
 	int status;
 
 	i = 0;
-	(*vars)->semaphore = sem_open("WTF", O_CREAT, (*vars)->n_philos);
-	(*vars)->print_sem = sem_open("print_sem", O_CREAT, 0, 1);
+	(*vars)->semaphore = sem_open("/my_semaphore", O_CREAT, (*vars)->n_philos);
+	(*vars)->print_sem = sem_open("/my_semaphore1", O_CREAT, 0, 1);
 	(*vars)->philos = malloc(sizeof(t_philo) * (*vars)->n_philos);
 	if (!(*vars)->philos)
 		return (0);
@@ -88,12 +93,9 @@ int init_philos(t_vars **vars)
 	{
 		(*vars)->philos[i].philoindex = i + 1;
 		(*vars)->philos[i].vars = *vars;
-		id = fork();
-		(*vars)->philos[i].philo = id;
-		if(id == 0)
-		{
-			routine(&(*vars)->philos[i]);
-		}
+		(*vars)->philos[i].philo = fork();
+		if((*vars)->philos[i].philo == 0)
+			chhild(&(*vars)->philos[i]);
 		i++;
 	}
 	i = 0;
