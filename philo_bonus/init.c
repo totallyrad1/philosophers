@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:54:09 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 22:18:23 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 22:32:23 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ void killchildsandexit(t_vars **vars)
 	sem_close((*vars)->print_sem);
 	sem_unlink("/my_semaphore");
 	sem_unlink("/my_semaphore1");
-	while(i < (*vars)->n_philos)
+	while((*vars) && i < (*vars)->n_philos)
 		kill((*vars)->philos[i++].philo, SIGKILL);
+	free((*vars)->philos);
+	free((*vars));
 	exit(0);
 }
 
@@ -111,6 +113,8 @@ int init_philos(t_vars **vars)
 		(*vars)->philos[i].philoindex = i + 1;
 		(*vars)->philos[i].vars = *vars;
 		(*vars)->philos[i].philo = fork();
+		if((*vars)->philos[i].philo == -1)
+			return (0);
 		if((*vars)->philos[i].philo == 0)
 			chhild(&(*vars)->philos[i]);
 		i++;
