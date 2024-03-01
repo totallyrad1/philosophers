@@ -33,6 +33,7 @@ void *monitor(void *arg)
 	philo = (t_philo *)arg;
 	while(RAD)
 	{
+		usleep(200);
 		if ((get_time() - philo->lasttime_ate) > philo->vars->time_to_die
 				&& philo->eating_count != philo->vars->n_times_must_eat)
 				exit(1);
@@ -54,8 +55,8 @@ void	*routine(void *philos)
 	while(RAD)
 	{
 		sem_wait(philo->vars->semaphore);
-		print_tookfork(philo);
 		sem_wait(philo->vars->semaphore);
+		print_tookfork(philo);
 		print_tookfork(philo);
 		print_eating(philo);
 		updatevalues(&philo);
@@ -73,9 +74,9 @@ void chhild(t_philo *philo)
 	pthread_t monitorth;
 	pthread_t slave;
 
-	philo->lasttime_ate = get_time();
 	pthread_create(&monitorth ,NULL, monitor, philo);
 	pthread_detach(monitorth);
+	philo->lasttime_ate = get_time();
 	pthread_create(&slave ,NULL, routine, philo);
 	pthread_join(slave, NULL);
 }
