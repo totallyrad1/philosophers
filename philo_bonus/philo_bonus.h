@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 17:11:57 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 12:14:23 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 18:35:30 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <sys/types.h>
-# include <wait.h>
 
 # define RAD 1
 

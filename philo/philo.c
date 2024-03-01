@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:52:47 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/29 15:21:37 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 21:48:05 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ void	ft_usleep(int time)
 
 static int	init(char **av, t_vars **vars)
 {
-	int	i;
-
-	i = 0;
 	*vars = malloc(sizeof(t_vars));
 	if (!*vars)
 	{

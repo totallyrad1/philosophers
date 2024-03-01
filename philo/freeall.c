@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:25:30 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/29 17:32:25 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 21:48:24 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	free_all(t_vars *vars)
 {
 	int	i;
 
-	i = 0;
 	if (vars && vars->philos)
 		free(vars->philos);
 	i = 0;
@@ -58,9 +57,6 @@ void	manager(t_vars *vars, int j)
 
 int	forksnphilos(t_vars **vars)
 {
-	int	i;
-
-	i = 0;
 	(*vars)->forks = malloc(sizeof(pthread_mutex_t) * (*vars)->n_philos);
 	if (!(*vars)->forks)
 		return (-1);
