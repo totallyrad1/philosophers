@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 17:59:11 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/29 15:21:43 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 12:06:32 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ void	print_thinking(t_philo *philo)
 void	print_died(t_vars *vars, int i)
 {
 	pthread_mutex_lock(&vars->print_mutex);
-	printf("%ld philo %d died\n", get_time()
+	printf("%ld %d died\n", get_time()
 		- vars->inittime, vars->philos[i].philoindex);
 }

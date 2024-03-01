@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 17:11:57 by asnaji            #+#    #+#             */
-/*   Updated: 2024/02/29 19:10:12 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 12:14:23 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <limits.h>
 # include <sys/time.h>
 # include <semaphore.h>
+# include <signal.h>
 
 # define RAD 1
 
@@ -41,6 +42,8 @@ typedef struct s_vars
 	long				inittime;
 	t_philo				*philos;
 	sem_t				*semaphore;
+	sem_t				*print_sem;
+	sem_t				*end_sem;
 	int					everyoneate;
 }				t_vars;
 
