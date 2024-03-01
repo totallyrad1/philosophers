@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:54:09 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 16:24:28 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 17:26:29 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ void killchildsandexit(t_vars **vars)
 	int	i;
 
 	i = 0;
+	sem_close((*vars)->semaphore);
+	sem_close((*vars)->print_sem);
+	sem_unlink("/my_semaphore");
+	sem_unlink("/my_semaphore1");
 	while(i < (*vars)->n_philos)
 		kill((*vars)->philos[i++].philo, SIGKILL);
 	exit(0);
@@ -47,15 +51,12 @@ void	*routine(void *philos)
 	t_philo	*philo;
 
 	philo = (t_philo *)philos;
-	philo->lasttime_ate = get_time();
-	if (philo->philoindex % 2 == 0)
-		usleep(500);
+	sem_wait(philo->vars->semaphore);
+	print_tookfork(philo);
+	sem_wait(philo->vars->semaphore);
+	print_tookfork(philo);
 	while(RAD)
 	{
-		sem_wait(philo->vars->semaphore);
-		print_tookfork(philo);
-		sem_wait(philo->vars->semaphore);
-		print_tookfork(philo);
 		print_eating(philo);
 		updatevalues(&philo);
 		sem_post(philo->vars->semaphore);
@@ -64,6 +65,10 @@ void	*routine(void *philos)
 			exit(0);
 		print_sleeping(philo);
 		print_thinking(philo);
+		sem_wait(philo->vars->semaphore);
+		print_tookfork(philo);
+		sem_wait(philo->vars->semaphore);
+		print_tookfork(philo);
 	}
 }
 
@@ -72,8 +77,10 @@ void chhild(t_philo *philo)
 	pthread_t monitorth;
 	pthread_t slave;
 
-	pthread_create(&slave ,NULL, routine, philo);
+	philo->lasttime_ate = get_time();
 	pthread_create(&monitorth ,NULL, monitor, philo);
+	pthread_detach(monitorth);
+	pthread_create(&slave ,NULL, routine, philo);
 	pthread_join(slave, NULL);
 }
 
@@ -83,8 +90,10 @@ int init_philos(t_vars **vars)
 	int status;
 
 	i = 0;
-	(*vars)->semaphore = sem_open("/my_semaphore", O_CREAT, (*vars)->n_philos);
-	(*vars)->print_sem = sem_open("/my_semaphore1", O_CREAT, 0, 1);
+	sem_unlink("/my_semaphore");
+	sem_unlink("/my_semaphore1");
+	(*vars)->semaphore = sem_open("/my_semaphore", O_CREAT | O_EXCL , 0644,(*vars)->n_philos);
+	(*vars)->print_sem = sem_open("/my_semaphore1", O_CREAT | O_EXCL, 0644, 1);
 	(*vars)->philos = malloc(sizeof(t_philo) * (*vars)->n_philos);
 	if (!(*vars)->philos)
 		return (0);
