@@ -27,7 +27,7 @@ void	ft_sleep(int time)
 
 	lhrba = get_time();
 	while (get_time() - lhrba < time)
-		usleep(500);
+		usleep(200);
 }
 
 static int	init(char **av, t_vars **vars)
