@@ -1,6 +1,6 @@
 NAME= philo_bonus
-SOURCES=  ft_atoi.c parsing.c print.c init.c philo_bonus.c
-COMPFLAGS= -Wall -Wextra -Werror -pthread -g -fsanitize=thread
+SOURCES=  ft_atoi.c parsing.c print.c init.c philo_bonus.c ft_strjoin.c ft_itoa.c
+COMPFLAGS= -Wall -Wextra -Werror
 CC = cc
 OBJECT=$(SOURCES:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:54:09 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 17:26:29 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 22:18:23 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,21 @@ void *monitor(void *arg)
 	while(RAD)
 	{
 		usleep(200);
+		sem_wait(philo->vars->vars_sem);
 		if ((get_time() - philo->lasttime_ate) > philo->vars->time_to_die
 				&& philo->eating_count != philo->vars->n_times_must_eat)
-				exit(1);
+			exit(1);
+		sem_post(philo->vars->vars_sem);
 	}
 	return (NULL);
 }
 
 void	updatevalues(t_philo **philo)
 {
+	sem_wait((*philo)->vars->vars_sem);
 	(*philo)->lasttime_ate = get_time();
 	(*philo)->eating_count++;
+	sem_post((*philo)->vars->vars_sem);
 }
 
 void	*routine(void *philos)
@@ -73,10 +77,17 @@ void chhild(t_philo *philo)
 {
 	pthread_t monitorth;
 	pthread_t slave;
-
+	char	*sem_name;
+	
+	sem_name = ft_strjoin(ft_itoa(philo->philoindex), "sem_vars");
+	philo->vars->vars_sem = sem_open(sem_name, O_CREAT | O_EXCL , 0644, 1);
+	sem_unlink(sem_name);
+	free(sem_name);
 	pthread_create(&monitorth ,NULL, monitor, philo);
 	pthread_detach(monitorth);
+	sem_wait(philo->vars->vars_sem);
 	philo->lasttime_ate = get_time();
+	sem_post(philo->vars->vars_sem);
 	pthread_create(&slave ,NULL, routine, philo);
 	pthread_join(slave, NULL);
 }

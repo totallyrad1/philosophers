@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 17:11:57 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 18:35:30 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/01 22:10:16 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_vars
 	t_philo				*philos;
 	sem_t				*semaphore;
 	sem_t				*print_sem;
+	sem_t				*vars_sem;
 	sem_t				*end_sem;
 	int					everyoneate;
 }				t_vars;
@@ -54,6 +55,8 @@ void	ft_sleep(int time);
 int	checkargs(char **av);
 int	ft_atoi(const char *str);
 int init_philos(t_vars **vars);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_itoa(int n);
 
 void	print_tookfork(t_philo *philo);
 void	print_eating(t_philo *philo);
