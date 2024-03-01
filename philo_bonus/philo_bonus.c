@@ -32,9 +32,6 @@ void	ft_sleep(int time)
 
 static int	init(char **av, t_vars **vars)
 {
-	int	i;
-
-	i = 0;
 	*vars = malloc(sizeof(t_vars));
 	if (!*vars)
 	{

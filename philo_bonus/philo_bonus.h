@@ -20,6 +20,9 @@
 # include <sys/time.h>
 # include <semaphore.h>
 # include <signal.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <wait.h>
 
 # define RAD 1
 

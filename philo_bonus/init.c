@@ -51,12 +51,12 @@ void	*routine(void *philos)
 	t_philo	*philo;
 
 	philo = (t_philo *)philos;
-	sem_wait(philo->vars->semaphore);
-	print_tookfork(philo);
-	sem_wait(philo->vars->semaphore);
-	print_tookfork(philo);
 	while(RAD)
 	{
+		sem_wait(philo->vars->semaphore);
+		print_tookfork(philo);
+		sem_wait(philo->vars->semaphore);
+		print_tookfork(philo);
 		print_eating(philo);
 		updatevalues(&philo);
 		sem_post(philo->vars->semaphore);
@@ -65,10 +65,6 @@ void	*routine(void *philos)
 			exit(0);
 		print_sleeping(philo);
 		print_thinking(philo);
-		sem_wait(philo->vars->semaphore);
-		print_tookfork(philo);
-		sem_wait(philo->vars->semaphore);
-		print_tookfork(philo);
 	}
 }
 
