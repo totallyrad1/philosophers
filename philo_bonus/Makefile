@@ -10,7 +10,7 @@ all: $(NAME)
 	$(CC) $(COMPFLAGS) -c $< -o $@
 
 $(NAME) : $(OBJECT)
-	$(CC) $(COMPFLAGS) $^ -o $@ 
+	$(CC) $(COMPFLAGS) -o $@ $^  
 
 clean:
 	rm -f $(OBJECT)
