@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 15:19:12 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 22:33:00 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/02 12:01:47 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,8 @@ int	main(int ac, char **av)
 	}
 	vars->everyoneate = vars->n_philos;
 	if ((vars) && !init_philos(&vars))
+	{
+		killchildsandexit(&vars);
 		return (1);
+	}
 }

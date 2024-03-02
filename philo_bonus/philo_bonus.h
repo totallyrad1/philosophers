@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 17:11:57 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 22:10:16 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/02 12:00:36 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ typedef struct s_vars
 
 long	get_time(void);
 void	ft_sleep(int time);
-int	checkargs(char **av);
-int	ft_atoi(const char *str);
-int init_philos(t_vars **vars);
+int		checkargs(char **av);
+int		ft_atoi(const char *str);
+int		init_philos(t_vars **vars);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_itoa(int n);
+int		waitforchilds(t_vars **vars);
+void	killchildsandexit(t_vars **vars);
 
 void	print_tookfork(t_philo *philo);
 void	print_eating(t_philo *philo);

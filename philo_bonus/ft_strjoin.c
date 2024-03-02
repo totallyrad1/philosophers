@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:01:36 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/01 22:02:55 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/02 11:59:51 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,40 @@ char	*ft_strjoin(char *s1, char *s2)
 		newstring[i++] = s2[j++];
 	newstring[i] = '\0';
 	return (free(s1), newstring);
+}
+
+void	killchildsandexit(t_vars **vars)
+{
+	int	i;
+
+	i = 0;
+	sem_close((*vars)->semaphore);
+	sem_close((*vars)->print_sem);
+	sem_unlink("/my_semaphore");
+	sem_unlink("/my_semaphore1");
+	while ((*vars) && i < (*vars)->n_philos)
+		kill((*vars)->philos[i++].philo, SIGKILL);
+	free((*vars)->philos);
+	free((*vars));
+	exit(0);
+}
+
+int	waitforchilds(t_vars **vars)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	while (waitpid((*vars)->philos[i].philo, &status, 0) != -1)
+	{
+		if (status != 0)
+		{
+			print_died(*vars, i);
+			killchildsandexit(vars);
+		}
+		if (i == (*vars)->n_philos)
+			i = 0;
+		i++;
+	}
+	return (1);
 }
