@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:54:09 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/02 12:00:01 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/02 12:07:11 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,16 @@ void	chhild(t_philo *philo)
 	sem_wait(philo->vars->vars_sem);
 	philo->lasttime_ate = get_time();
 	sem_post(philo->vars->vars_sem);
-	pthread_create(&slave, NULL, routine, philo);
-	pthread_join(slave, NULL);
+	if (pthread_create(&slave, NULL, routine, philo) != 0)
+	{
+		perror("pthread_create");
+		exit(2);
+	}
+	if (pthread_join(slave, NULL) != 0)
+	{
+		perror("pthread_join");
+		exit(2);
+	}
 }
 
 int	init_philos(t_vars **vars)
