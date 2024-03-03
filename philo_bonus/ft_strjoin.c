@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:01:36 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/02 11:59:51 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/03 12:14:20 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ int	waitforchilds(t_vars **vars)
 			i = 0;
 		i++;
 	}
+	killchildsandexit(vars);
 	return (1);
 }

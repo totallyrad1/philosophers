@@ -6,7 +6,7 @@
 /*   By: asnaji <asnaji@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:54:09 by asnaji            #+#    #+#             */
-/*   Updated: 2024/03/02 12:07:11 by asnaji           ###   ########.fr       */
+/*   Updated: 2024/03/03 12:04:13 by asnaji           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,19 @@ int	init_philos(t_vars **vars)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	sem_unlink("/my_semaphore");
 	sem_unlink("/my_semaphore1");
 	(*vars)->semaphore = sem_open("/my_semaphore", O_CREAT | O_EXCL,
 			0644, (*vars)->n_philos);
 	(*vars)->print_sem = sem_open("/my_semaphore1", O_CREAT | O_EXCL, 0644, 1);
+	if ((*vars)->semaphore == SEM_FAILED || (*vars)->print_sem == SEM_FAILED)
+		return (0);
 	(*vars)->philos = malloc(sizeof(t_philo) * (*vars)->n_philos);
 	if (!(*vars)->philos)
 		return (0);
 	(*vars)->inittime = get_time();
-	while (i < (*vars)->n_philos)
+	while (++i < (*vars)->n_philos)
 	{
 		(*vars)->philos[i].philoindex = i + 1;
 		(*vars)->philos[i].vars = *vars;
@@ -109,7 +111,6 @@ int	init_philos(t_vars **vars)
 			return (0);
 		if ((*vars)->philos[i].philo == 0)
 			chhild(&(*vars)->philos[i]);
-		i++;
 	}
 	return (waitforchilds(vars));
 }
